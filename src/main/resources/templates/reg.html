@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>reg</title>
+    <script src="/webjars/jquery/jquery.min.js"></script>
+    <script src="/webjars/sockjs-client/sockjs.min.js"></script>
+    <script src="/webjars/stomp-websocket/stomp.min.js"></script>
+</head>
+<body>
+    <div class="reg">
+        <form action="/mainPage" method="get">
+            <input id ="id" type="number" name="id" placeholder="id">
+            <input id="FIO" type="text" name="FIO" placeholder="name">
+            <input id="btn" type="submit">
+        </form>
+    </div>
+    <script>
+        var socket = new SockJS('/gs-guide-websocket');
+        var stompClient = Stomp.over(socket);
+        /*stompClient.connect({}, function (frame) {
+            console.log('Connected: ' + frame);
+            stompClient.subscribe('/topic/greetings',function (data){
+                console.log(data);
+            });
+        });*/
+        $('#btn').bind('click', function (){
+            stompClient.send("/app/hello",{},JSON.stringify({
+                    'id': $("#id").val(),
+                    'fio': $("#FIO").val(),
+                    'id_friend': $("#id").val()
+                }
+            ));
+        });
+    </script>
+</body>
+</html>

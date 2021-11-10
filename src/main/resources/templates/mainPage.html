@@ -1,0 +1,61 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Getting Started: Serving Web Content</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <script src="/webjars/jquery/jquery.min.js"></script>
+    <script src="/webjars/sockjs-client/sockjs.min.js"></script>
+    <script src="/webjars/stomp-websocket/stomp.min.js"></script>
+    <style>
+        .user{
+            display: flex;
+            flex-direction:  row;
+            width: 10px;
+            margin-bottom: 20px;
+        }
+        .user-name{
+            padding-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="all-user">
+        <div class="user">
+            <p class="user-name">dan</p>
+            <input type="submit" value="перейти в диалог">
+        </div>
+        <form action="/main/chat" method="post">
+            <div class="user">
+                <p class="user-name">dan</p>
+                <input type="hidden" value="">
+                <input type="submit"  value="перейти в диалог">
+            </div>
+        </form>
+
+    </div>
+ <script>
+     var stompClient = null;
+     const searchString = new URLSearchParams(window.location.search);
+     const from = searchString.get('FIO');
+     function connect(){
+         var socket = new SockJS('/gs-guide-websocket');
+         stompClient = Stomp.over(socket);
+         stompClient.connect({},function (frame){
+            stompClient.subscribe('/topic/greetings',function (data){
+                let to = JSON.parse(data.body).fio;
+                $(".all-user").append('<div class="user>">'  +
+                    '<form action="main/chat" method="get">' +
+                            '<p class="to">'+to +'</p>' +
+                            '<input type="hidden" name = "to" value="'+ to +'">'+
+                            '<input type="hidden" name = "from" value="'+ from +'">' +
+                            '<input type="submit" value="перейти в диалог">' +
+                    '</form>'+
+                    '</div>' );
+            })
+         });
+         console.log($(".to").text());
+     }
+     connect();
+ </script>
+</body>
+</html>

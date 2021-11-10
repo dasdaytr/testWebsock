@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="/webjars/jquery/jquery.min.js"></script>
+    <script src="/webjars/sockjs-client/sockjs.min.js"></script>
+    <script src="/webjars/stomp-websocket/stomp.min.js"></script>
+    <style>
+        .message-user{
+            display: flex;
+            flex-direction: row;
+        }
+        .from{
+            padding-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <input type="text" class="message">
+    <input type="submit" class="send" value="отправить">
+    <div class="messages">
+
+    </div>
+    <script>
+        const searchString = new URLSearchParams(window.location.search);
+        const to = searchString.get('to');
+        const from = searchString.get('from');
+        let message = '';
+        var socket = new SockJS('/gs-guide-websocket');
+        var stompClient = Stomp.over(socket);
+        stompClient.connect({}, function (frame){
+           console.log('Connected: ' + frame);
+           stompClient.subscribe('/topic/greeting/'+ from, function (data) {
+               message = JSON.parse(data.body).message;
+              $(".messages").append(
+                  '<div class="message-user">' +
+                        '<div class="from">'+ from +': '+ '</div>' +
+                        '<div class="message">'+ message + '</div>'+
+                  '</div>');
+           });
+        });
+        console.log('/app/hello/'+to);
+        $(".send").bind('click',function (){
+            stompClient.send("/app/hello/"+to,{},JSON.stringify({
+                'from': from,
+                'to': to,
+                'message': $(".message").val()
+            }))
+        })
+    </script>
+</body>
+</html>
