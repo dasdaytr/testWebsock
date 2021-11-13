@@ -10,7 +10,11 @@ body {
     padding: 40px 0;
     color: white;
 }
-
+button {
+    outline: none; /* Для синий ободки */
+    border: 0;
+    background: transparent;
+}
 .container {
     margin: 0 auto;
     width: 750px;

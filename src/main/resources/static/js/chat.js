@@ -37,7 +37,7 @@ function registration() {
             alert("Login is already busy!")
         }
     })
-}
+
 
 function selectUser(userName) {
     console.log("selecting users: " + userName);

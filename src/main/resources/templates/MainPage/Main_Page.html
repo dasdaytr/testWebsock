@@ -3,8 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <script src="/webjars/jquery/jquery.min.js"></script>
 </head>
 <body>
+<form class= "form-id" action="/friends" method="get">
+    <input type="submit" value="мои друзья">
+</form>
+<label>
+    <input class="str" type="text" >
+</label>
+<button class="btn">Получить значение</button>
+    <div class="list-friend">
+        <div class="friend">
+        </div>
+    </div>
+<script>
+</script>
+<script src="/webjars/sockjs-client/sockjs.min.js"></script>
+<script src="/webjars/stomp-websocket/stomp.min.js"></script>
+<script src="js/add_friend.js"></script>
 
 </body>
 </html>
