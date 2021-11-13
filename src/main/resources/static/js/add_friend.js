@@ -5,6 +5,9 @@ let id  = {};
 function getMyId(){
     $.get(url_controller+'/id').done(function (data){
         id = data;
+        $(".form-id").append(
+            '<input type="hidden" name="id" value="'+ id[0] +'">'
+        )
     })
 }
 getMyId();
