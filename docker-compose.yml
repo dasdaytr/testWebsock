@@ -1,0 +1,33 @@
+version: '3.1'
+services:
+  db:
+    image: postgres
+    restart: always
+    env_file:
+      - ./data/database.env
+    volumes:
+      - ./data/create_tables.sql:/docker-entrypoint-initdb.d/create_tables.sql
+    ports:
+      - 5432:5432
+  pgadmin:
+    image: dpage/pgadmin4
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: root
+    ports:
+      - 5050:80
+  apache:
+    build: ./httpd
+    ports:
+        - 80:80
+    volumes:
+    - ./httpd/httpd.conf:/usr/local/apache2/conf/httpd.conf
+    - ./srcRest:/var/www/html
+  php:
+    build: ./srcRest
+    volumes:
+      - ./srcRest:/var/www/html
+    depends_on:
+      - db
+

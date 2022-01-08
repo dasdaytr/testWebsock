@@ -18,6 +18,37 @@
         </div>
     </div>
 <script>
+    let allUsers = {}
+    let classesFriend = []
+    let myNode = document.querySelector('.list-friend .friend')
+    $.get('http://localhost/users').done(function (data){
+        allUsers = data;
+    })
+    let input_text_search = document.querySelector('.str');
+    input_text_search.oninput = function (){
+        classesFriend = []
+        $('.list-friend .friend .form_friend').remove()
+        console.log(input_text_search.value.length)
+        if(input_text_search.value.length ===0){
+            $('.list-friend .friend .form_friend').remove()
+        }
+        for(let i in allUsers){
+            let str = allUsers[i].first_name +' '+ allUsers[i].last_name;
+
+            if(str.includes(input_text_search.value) && classesFriend.indexOf(allUsers[i].id)===-1 && input_text_search.value.length !==0){
+                $(".list-friend .friend ").append(
+                    '<form class="form_friend" action="">' +
+                    '<input type="hidden" name = "id" value="' + allUsers[i].id + '"/>' +
+                    '<input type="hidden" name = "first_name" value="' + allUsers[i].first_name + '"/>' +
+                    '<input type="hidden" name = "last_name" value="' + allUsers[i].last_name + '"/>' +
+                    '<p>'+ allUsers[i].first_name + ' ' + allUsers[i].last_name +'</p>' +
+                    '<button class="friend_btn" >' + 'Добавить в друзья'+'</button' +
+                    '</form>'
+                )
+            }
+        }
+    }
+    console.log("aaaa")
 </script>
 <script src="/webjars/sockjs-client/sockjs.min.js"></script>
 <script src="/webjars/stomp-websocket/stomp.min.js"></script>

@@ -37,6 +37,10 @@
      var stompClient = null;
      const searchString = new URLSearchParams(window.location.search);
      const from = searchString.get('FIO');
+     let input_text_search = document.getElementsByClassName('.str')[0];
+     input_text_search.addEventListener(function (){
+         console.log("aaaa")
+     })
      function connect(){
          var socket = new SockJS('/gs-guide-websocket');
          stompClient = Stomp.over(socket);
@@ -53,9 +57,9 @@
                     '</div>' );
             })
          });
-         console.log($(".to").text());
      }
      connect();
+     console.log("aah")
  </script>
 </body>
 </html>

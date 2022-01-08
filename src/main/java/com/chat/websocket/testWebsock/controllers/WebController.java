@@ -28,7 +28,6 @@ public class WebController {
     }
     @MessageMapping("/chat/{id}")
     private void addFriend(Message message){
-        System.out.println("asdasdasdasdasdasd");
         simpMessagingTemplate.convertAndSend("/topic/messages/"+message.getIdChatRoom(),message);
     }
 }
